@@ -20,6 +20,12 @@ Download or clone the repository and include `glint.js` in your HTML.
 <script src="glint.js"></script>
 ```
 
+Or link to the latest version automatically.
+
+```html
+<script src="https://fast4word.github.io/glintcode/glint.js"></script>
+```
+
 ## Hello World
 
 ```html
