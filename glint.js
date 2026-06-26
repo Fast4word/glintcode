@@ -112,10 +112,6 @@ function num(value) {
 function bool(value) {
     return Boolean(value);
 }
-
-document.querySelectorAll('script[type="glint"]').forEach(script => {
-    new Function(script.textContent)();
-});
 // ======================
 // DOM Helpers
 // ======================
@@ -219,3 +215,7 @@ function page(textValue) {
     title(textValue);
     heading(textValue, 1);
 }
+
+document.querySelectorAll('script[type="glint"]').forEach(script => {
+    new Function(script.textContent)();
+});
