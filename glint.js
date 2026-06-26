@@ -116,3 +116,106 @@ function bool(value) {
 document.querySelectorAll('script[type="glint"]').forEach(script => {
     new Function(script.textContent)();
 });
+// ======================
+// DOM Helpers
+// ======================
+
+function append(parent, child) {
+    parent.appendChild(child);
+}
+
+function text(element, value) {
+    element.textContent = value;
+}
+
+function html(element, value) {
+    element.innerHTML = value;
+}
+
+function style(element, property, value) {
+    element.style[property] = value;
+}
+
+function select(selector) {
+    return document.querySelector(selector);
+}
+
+function selectAll(selector) {
+    return [...document.querySelectorAll(selector)];
+}
+
+function on(element, event, callback) {
+    element.addEventListener(event, callback);
+}
+
+function remove(element) {
+    element.remove();
+}
+
+function clear(element) {
+    element.innerHTML = "";
+}
+
+// ======================
+// UI Helpers
+// ======================
+
+function heading(textValue, level = 1) {
+    const h = document.createElement("h" + level);
+    h.textContent = textValue;
+    document.body.appendChild(h);
+    return h;
+}
+
+function paragraph(textValue) {
+    const p = document.createElement("p");
+    p.textContent = textValue;
+    document.body.appendChild(p);
+    return p;
+}
+
+function button(textValue, onclick) {
+    const btn = document.createElement("button");
+    btn.textContent = textValue;
+
+    if (onclick)
+        btn.onclick = onclick;
+
+    document.body.appendChild(btn);
+
+    return btn;
+}
+
+function image(src, alt = "") {
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = alt;
+    document.body.appendChild(img);
+    return img;
+}
+
+function input(placeholder = "") {
+    const inp = document.createElement("input");
+    inp.placeholder = placeholder;
+    document.body.appendChild(inp);
+    return inp;
+}
+
+function line() {
+    const hr = document.createElement("hr");
+    document.body.appendChild(hr);
+    return hr;
+}
+
+// ======================
+// Page Helpers
+// ======================
+
+function title(textValue) {
+    document.title = textValue;
+}
+
+function page(textValue) {
+    title(textValue);
+    heading(textValue, 1);
+}
