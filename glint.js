@@ -215,6 +215,20 @@ function page(textValue) {
     title(textValue);
     heading(textValue, 1);
 }
+function create(element, id = "", className = "") {
+    const el = document.createElement(element);
+
+    if (id) {
+        el.id = id;
+        window[id] = el; // THIS is what makes Glint global IDs work
+    }
+
+    if (className) {
+        el.className = className;
+    }
+
+    return el;
+}
 
 document.querySelectorAll('script[type="glint"]').forEach(script => {
     new Function(script.textContent)();
