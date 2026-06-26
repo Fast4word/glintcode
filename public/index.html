@@ -1,0 +1,234 @@
+````html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlintCode Documentation</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3em;
+        }
+
+        header p {
+            color: #d1d5db;
+        }
+
+        nav {
+            background: white;
+            border-bottom: 1px solid #ddd;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #2563eb;
+            margin-right: 20px;
+            font-weight: bold;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        section {
+            margin-bottom: 60px;
+        }
+
+        h2 {
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        pre {
+            background: #1e1e1e;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: Consolas, monospace;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th,
+        table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        table th {
+            background: #eee;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>✨ GlintCode</h1>
+    <p>Official Documentation</p>
+</header>
+
+<nav>
+    <a href="#getting-started">Getting Started</a>
+    <a href="#syntax">Syntax</a>
+    <a href="#functions">Functions</a>
+    <a href="#dom">DOM</a>
+    <a href="#examples">Examples</a>
+</nav>
+
+<main>
+
+<section id="getting-started">
+
+# Getting Started
+
+Include `glint.js`:
+
+```html
+<script src="glint.js"></script>
+
+<script type="glint">
+print("Hello, Glint!")
+</script>
+````
+
+</section>
+
+<section id="syntax">
+
+# Syntax
+
+Glint uses JavaScript syntax with extra built-in functions.
+
+Example:
+
+```glint
+let name = "Luke"
+
+if(name == "Luke") {
+    print("Hello!")
+}
+```
+
+</section>
+
+<section id="functions">
+
+# Built-in Functions
+
+| Function                 | Description             |
+| ------------------------ | ----------------------- |
+| print()                  | Prints to the console   |
+| println()                | Prints a line           |
+| warn()                   | Console warning         |
+| error()                  | Console error           |
+| random(min,max)          | Random integer          |
+| upper(text)              | Uppercase text          |
+| lower(text)              | Lowercase text          |
+| length(obj)              | Length of string/array  |
+| first(array)             | First item              |
+| last(array)              | Last item               |
+| contains(array,value)    | Checks for a value      |
+| create(element,id,class) | Creates an HTML element |
+
+</section>
+
+<section id="dom">
+
+# DOM
+
+Creating an element:
+
+```glint
+create("h1","title","heading")
+
+title.textContent = "Hello World"
+
+document.body.appendChild(title)
+```
+
+Creating a button:
+
+```glint
+create("button","btn","primary")
+
+btn.textContent = "Click Me"
+
+btn.onclick = () => {
+    print("Clicked!")
+}
+
+document.body.appendChild(btn)
+```
+
+</section>
+
+<section id="examples">
+
+# Example Program
+
+```glint
+print("Welcome!")
+
+create("h1","title","hero")
+title.textContent = "GlintCode"
+
+create("button","button","primary")
+button.textContent = "Press Me"
+
+button.onclick = () => {
+    print(random(1,100))
+}
+
+document.body.appendChild(title)
+document.body.appendChild(button)
+```
+
+</section>
+
+<footer>
+GlintCode Documentation • Powered by JavaScript
+</footer>
+
+</body>
+</html>
+```
