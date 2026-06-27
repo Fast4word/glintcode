@@ -1,11 +1,64 @@
-<!doctype html>
-<html>
-  <head>
-    <script src="https://fast4word.github.io/glintcode/glint.js"></script>
-  </head>
-  <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glint CDN Application</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; }
+        button { padding: 8px 16px; margin: 4px; font-size: 14px; cursor: pointer; }
+        input { padding: 8px; margin: 4px; font-size: 14px; }
+        .box { padding: 15px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; background: #f9f9f9; }
+    </style>
+
+    <!-- 1. IMPORT GLINT ENGINE VIA REMOTE CDN -->
+    <script src="https://github.io"></script>
+</head>
+<body>
+
+    <!-- 2. APPLICATION WRITTEN IN GLINT -->
     <script type="glint">
-print("Hello, Glint!")
-</script>
-  </body>
+        // Set up page layout
+        page("Glint CDN Demo");
+        paragraph("This application uses the remote framework hosted on GitHub Pages.");
+        line();
+
+        // ------------------------------------------
+        // Feature 1: Counter App (State & ID Demo)
+        // ------------------------------------------
+        heading("Interactive Counter", 2);
+        
+        const appBox = create("div", "counterApp", "box");
+        append(document.body, appBox);
+
+        const counterText = create("p", "counterDisplay");
+        text(counterDisplay, "Current clicks: 0");
+        append(counterApp, counterText);
+
+        let clicks = 0;
+
+        button("Click Me!", () => {
+            clicks = clicks + 1;
+            text(counterDisplay, "Current clicks: " + clicks);
+        });
+
+        line();
+
+        // ------------------------------------------
+        // Feature 2: Core Utility Tester
+        // ------------------------------------------
+        heading("Core Utilities", 2);
+        
+        const utilBox = create("div", "utilApp", "box");
+        append(document.body, utilBox);
+
+        const diceRoll = random(1, 100);
+        const systemTime = now();
+
+        const infoP = create("p");
+        text(infoP, "Random roll (1-100): " + diceRoll + " | Timestamp: " + systemTime);
+        append(utilApp, infoP);
+    </script>
+
+</body>
 </html>
