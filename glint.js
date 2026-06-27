@@ -230,6 +230,8 @@ function create(element, id = "", className = "") {
     return el;
 }
 
-document.querySelectorAll('script[type="glint"]').forEach(script => {
-    new Function(script.textContent)();
+window.addEventListener("load", () => {
+    document.querySelectorAll('script[type="glint"]').forEach(script => {
+        new Function(script.textContent)();
+    });
 });
