@@ -3,6 +3,26 @@ function print(...args) {
     console.log(...args);
 }
 
+function style(href, rel = 'stylesheet', type = 'text/css') {
+  if (!href) {
+    console.error('glint error: href is required to link stylesheet');
+  }
+
+  const existingLink = document.querySelector(`link[href="${href}"]`);
+  if (existingLink) {
+    console.warn('glint blocked: stylesheet ', href, ' already exists);
+    return null; // Explicitly return null if stylesheet exists
+  }
+
+  const link = document.createElement('link');
+  link.rel = rel;
+  link.href = href;
+  link.type = type;
+
+  document.head.appendChild(link);
+}
+
+
 function println(...args) {
     console.log(...args);
 }
