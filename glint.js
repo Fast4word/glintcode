@@ -10,7 +10,7 @@ function linkstyle(href, rel = 'stylesheet', type = 'text/css') {
 
   const existingLink = document.querySelector(`link[href="${href}"]`);
   if (existingLink) {
-    console.warn('glint blocked: stylesheet ', href, ' already exists);
+    console.warn('glint blocked: stylesheet ', href, ' already exists');
     return null; // Explicitly return null if stylesheet exists
   }
 
