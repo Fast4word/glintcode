@@ -3,7 +3,7 @@ function print(...args) {
     console.log(...args);
 }
 
-function style(href, rel = 'stylesheet', type = 'text/css') {
+function linkstyle(href, rel = 'stylesheet', type = 'text/css') {
   if (!href) {
     console.error('glint error: href is required to link stylesheet');
   }
