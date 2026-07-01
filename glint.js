@@ -1,3 +1,37 @@
+const Glint = {
+    modules: {},
+
+    module(name, functions) {
+        this.modules[name] = functions;
+        window[name] = functions;
+    }
+};
+async function loadModules() {
+    try {
+        const response = await fetch(".glint");
+
+        if (!response.ok)
+            return;
+
+        const config = await response.text();
+
+        const files = config
+            .split("\n")
+            .map(line => line.trim())
+            .filter(line => line.length > 0);
+
+        for (const file of files) {
+            await new Promise(resolve => {
+                const script = document.createElement("script");
+                script.src = file;
+                script.onload = resolve;
+                document.head.appendChild(script);
+            });
+        }
+    } catch (err) {
+        console.warn("No .glint file found.");
+    }
+}
 // Output
 function print(...args) {
     console.log(...args);
@@ -251,7 +285,18 @@ function create(element, id = "", className = "") {
 }
 
 window.addEventListener("load", () => {
-    document.querySelectorAll('script[type="glint"]').forEach(script => {
-        new Function(script.textContent)();
+    window.addEventListener("DOMContentLoaded", async () => {
+
+        await loadModules();
+    
+        document.querySelectorAll('script[type="glint"]').forEach(script => {
+            try {
+                new Function(script.textContent)();
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    
     });
-});
+    });
+
