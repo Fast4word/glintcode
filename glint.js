@@ -308,19 +308,17 @@ function create(element, id = "", className = "") {
     return el;
 }
 
-window.addEventListener("load", () => {
-    window.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("load", async () => {
 
-        await loadModules();
-    
-        document.querySelectorAll('script[type="glint"]').forEach(script => {
-            try {
-                new Function(script.textContent)();
-            } catch (err) {
-                console.error(err);
-            }
-        });
-    
+    await loadModules();
+
+    document.querySelectorAll('script[type="glint"]').forEach(script => {
+        try {
+            new Function(script.textContent)();
+        } catch (err) {
+            console.error("Glint Error:", err);
+        }
     });
-    });
+
+});
 
