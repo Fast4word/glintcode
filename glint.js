@@ -37,6 +37,30 @@ function print(...args) {
     console.log(...args);
 }
 
+function repeat(times, callback) {
+    let i = 0;
+
+    function run() {
+        if (i >= times) return;
+
+        callback(i);
+        i++;
+
+        requestAnimationFrame(run);
+    }
+
+    requestAnimationFrame(run);
+}
+
+function forever(callback) {
+    function run() {
+        callback();
+        requestAnimationFrame(run);
+    }
+
+    requestAnimationFrame(run);
+}
+
 function linkstyle(href, rel = 'stylesheet', type = 'text/css') {
   if (!href) {
     console.error('glint error: href is required to link stylesheet');
