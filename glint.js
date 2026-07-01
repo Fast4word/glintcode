@@ -25,6 +25,7 @@ async function loadModules() {
                 const script = document.createElement("script");
                 script.src = file;
                 script.onload = resolve;
+                script.onerror = resolve;
                 document.head.appendChild(script);
             });
         }
@@ -308,9 +309,13 @@ function create(element, id = "", className = "") {
     return el;
 }
 
-window.addEventListener("load", async () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
-    await loadModules();
+    try {
+        await loadModules();
+    } catch (err) {
+        console.warn("Skipping module loading.");
+    }
 
     document.querySelectorAll('script[type="glint"]').forEach(script => {
         try {
