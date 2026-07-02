@@ -13,6 +13,9 @@ GlintCode lets you write code inside a simple `<script type="glint">` tag. The G
 * 📦 Single runtime (`glint.js`)
 * 🧩 Extendable with modules
 * 🎨 Built-in DOM helpers
+* 📋 Form builder with validation
+* 💾 Local storage helpers
+* 🌐 HTTP request helpers
 * ⚡ Powered by JavaScript
 
 ---
@@ -287,9 +290,318 @@ Converts a value to a boolean.
 
 ---
 
-# DOM Helpers
+## Form Validation
 
-## `create(element, id, class)`
+### `validate(value, rules)`
+
+Validates a value against a set of rules. Returns an object with `isValid` and `errors` array.
+
+Available rules:
+- `required` - Field cannot be empty
+- `email` - Must be valid email format
+- `minLength` - Minimum character length
+- `maxLength` - Maximum character length
+- `pattern` - Regular expression pattern
+- `patternMessage` - Custom error message for pattern
+- `min` - Minimum numeric value
+- `max` - Maximum numeric value
+
+```glint
+let result = validate("user@example.com", {
+    email: true,
+    required: true
+})
+
+if (result.isValid) {
+    print("Valid email!")
+} else {
+    print(result.errors[0])
+}
+```
+
+---
+
+## Local Storage
+
+### `save(key, value)`
+
+Saves a value to local storage. Automatically serializes to JSON.
+
+```glint
+save("username", "Alice")
+save("userSettings", { theme: "dark", fontSize: 14 })
+```
+
+### `load(key)`
+
+Loads a value from local storage. Automatically deserializes from JSON.
+
+```glint
+let username = load("username")
+print(username)
+```
+
+### `deleteStorage(key)`
+
+Deletes a specific key from local storage.
+
+```glint
+deleteStorage("username")
+```
+
+### `clearStorage()`
+
+Clears all local storage.
+
+```glint
+clearStorage()
+```
+
+---
+
+## HTTP Requests
+
+### `httpGet(url, options)`
+
+Makes a GET request.
+
+```glint
+let data = await httpGet("https://api.example.com/users")
+print(data)
+```
+
+### `httpPost(url, data, options)`
+
+Makes a POST request.
+
+```glint
+let result = await httpPost("https://api.example.com/users", {
+    name: "John",
+    email: "john@example.com"
+})
+print(result)
+```
+
+### `httpPut(url, data, options)`
+
+Makes a PUT request.
+
+```glint
+let result = await httpPut("https://api.example.com/users/1", {
+    name: "Jane"
+})
+```
+
+### `httpDelete(url, options)`
+
+Makes a DELETE request.
+
+```glint
+let result = await httpDelete("https://api.example.com/users/1")
+```
+
+---
+
+## Form Builder
+
+The `formBuilder` function creates interactive forms with built-in validation and styling.
+
+### Basic Usage
+
+```glint
+let form = formBuilder({
+    submitText: "Register",
+    onSubmit: (data) => {
+        print("Form submitted:", data)
+        save("userForm", data)
+    }
+})
+
+form
+    .addText("username", "Username", { required: true })
+    .addEmail("email", "Email", { required: true })
+    .addPassword("password", "Password", { required: true, minLength: 8 })
+    .addNumber("age", "Age", { min: 18, max: 120 })
+    .render(document.body)
+```
+
+### Form Builder Methods
+
+#### `addText(name, label, options)`
+
+Adds a text input field.
+
+```glint
+form.addText("name", "Full Name", {
+    placeholder: "Enter your name",
+    required: true,
+    rules: { minLength: 2, maxLength: 100 }
+})
+```
+
+#### `addEmail(name, label, options)`
+
+Adds an email input field with email validation.
+
+```glint
+form.addEmail("email", "Email Address", { required: true })
+```
+
+#### `addPassword(name, label, options)`
+
+Adds a password input field.
+
+```glint
+form.addPassword("password", "Password", {
+    required: true,
+    rules: { minLength: 8 }
+})
+```
+
+#### `addNumber(name, label, options)`
+
+Adds a number input field.
+
+```glint
+form.addNumber("age", "Age", {
+    min: 18,
+    max: 100
+})
+```
+
+#### `addTextarea(name, label, options)`
+
+Adds a textarea field.
+
+```glint
+form.addTextarea("bio", "Biography", {
+    rows: 5,
+    placeholder: "Tell us about yourself"
+})
+```
+
+#### `addSelect(name, label, options)`
+
+Adds a select dropdown field.
+
+```glint
+form.addSelect("country", "Country", {
+    choices: [
+        { value: "us", label: "United States" },
+        { value: "uk", label: "United Kingdom" },
+        { value: "ca", label: "Canada" }
+    ]
+})
+```
+
+#### `addCheckbox(name, label, options)`
+
+Adds a checkbox field.
+
+```glint
+form.addCheckbox("terms", "I agree to the terms", {
+    required: true
+})
+```
+
+#### `addRadio(name, label, options)`
+
+Adds radio button fields.
+
+```glint
+form.addRadio("subscription", "Subscription Type", {
+    choices: [
+        { value: "free", label: "Free" },
+        { value: "pro", label: "Pro" },
+        { value: "enterprise", label: "Enterprise" }
+    ]
+})
+```
+
+#### `render(parentSelector)`
+
+Renders the form to the DOM.
+
+```glint
+let formElement = form.render()
+append(document.body, formElement)
+
+// Or pass a selector
+form.render(document.body)
+```
+
+#### `getData()`
+
+Gets the current form data as an object.
+
+```glint
+let data = form.getData()
+print(data)
+```
+
+#### `reset()`
+
+Resets all form fields to empty values.
+
+```glint
+form.reset()
+```
+
+#### `setValues(data)`
+
+Populates form fields with values.
+
+```glint
+form.setValues({
+    username: "alice",
+    email: "alice@example.com"
+})
+```
+
+### Complete Form Example
+
+```glint
+page("Registration Form")
+
+let form = formBuilder({
+    submitText: "Create Account",
+    onSubmit: (data) => {
+        print("Account created:", data)
+        save("user", data)
+        alertBox("Welcome, " + data.username + "!")
+    }
+})
+
+form
+    .addText("username", "Username", { 
+        required: true, 
+        rules: { minLength: 3, maxLength: 20 } 
+    })
+    .addEmail("email", "Email", { required: true })
+    .addPassword("password", "Password", { 
+        required: true, 
+        rules: { minLength: 8 } 
+    })
+    .addPassword("confirm", "Confirm Password", { required: true })
+    .addNumber("age", "Age", { min: 13, max: 120 })
+    .addSelect("country", "Country", {
+        choices: ["USA", "Canada", "UK", "Other"]
+    })
+    .addCheckbox("terms", "I agree to the Terms & Conditions", { required: true })
+    .addRadio("newsletter", "Newsletter", {
+        choices: [
+            { value: "yes", label: "Yes, subscribe me" },
+            { value: "no", label: "No thanks" }
+        ]
+    })
+    .render(document.body)
+```
+
+---
+
+## DOM Helpers
+
+### `create(element, id, class)`
 
 Creates an HTML element.
 
@@ -297,9 +609,7 @@ Creates an HTML element.
 create("h1", "title", "hero")
 ```
 
----
-
-## `append(parent, child)`
+### `append(parent, child)`
 
 Appends a child element.
 
@@ -307,9 +617,7 @@ Appends a child element.
 append(document.body, title)
 ```
 
----
-
-## `text(element, value)`
+### `text(element, value)`
 
 Sets text content.
 
@@ -317,9 +625,7 @@ Sets text content.
 text(title, "Hello!")
 ```
 
----
-
-## `html(element, value)`
+### `html(element, value)`
 
 Sets HTML.
 
@@ -327,9 +633,7 @@ Sets HTML.
 html(title, "<b>Hello</b>")
 ```
 
----
-
-## `style(element, property, value)`
+### `style(element, property, value)`
 
 Changes CSS.
 
@@ -337,9 +641,7 @@ Changes CSS.
 style(title, "color", "blue")
 ```
 
----
-
-## `select(selector)`
+### `select(selector)`
 
 Returns the first matching element.
 
@@ -347,9 +649,7 @@ Returns the first matching element.
 let box = select("#box")
 ```
 
----
-
-## `selectAll(selector)`
+### `selectAll(selector)`
 
 Returns all matching elements.
 
@@ -357,9 +657,7 @@ Returns all matching elements.
 let buttons = selectAll("button")
 ```
 
----
-
-## `on(element, event, callback)`
+### `on(element, event, callback)`
 
 Adds an event listener.
 
@@ -369,9 +667,7 @@ on(button, "click", () => {
 })
 ```
 
----
-
-## `remove(element)`
+### `remove(element)`
 
 Removes an element.
 
@@ -379,9 +675,7 @@ Removes an element.
 remove(title)
 ```
 
----
-
-## `clear(element)`
+### `clear(element)`
 
 Removes all children.
 
@@ -391,9 +685,9 @@ clear(document.body)
 
 ---
 
-# UI Helpers
+## UI Helpers
 
-## `heading(text, level)`
+### `heading(text, level)`
 
 Creates and appends a heading.
 
@@ -401,9 +695,7 @@ Creates and appends a heading.
 heading("Welcome", 1)
 ```
 
----
-
-## `paragraph(text)`
+### `paragraph(text)`
 
 Creates a paragraph.
 
@@ -411,9 +703,7 @@ Creates a paragraph.
 paragraph("Hello!")
 ```
 
----
-
-## `button(text, callback)`
+### `button(text, callback)`
 
 Creates a button.
 
@@ -423,9 +713,7 @@ button("Click Me", () => {
 })
 ```
 
----
-
-## `image(src, alt)`
+### `image(src, alt)`
 
 Creates an image.
 
@@ -433,9 +721,7 @@ Creates an image.
 image("logo.png", "Logo")
 ```
 
----
-
-## `input(placeholder)`
+### `input(placeholder)`
 
 Creates a text input.
 
@@ -443,9 +729,7 @@ Creates a text input.
 input("Enter your name")
 ```
 
----
-
-## `line()`
+### `line()`
 
 Creates a horizontal rule.
 
@@ -455,9 +739,9 @@ line()
 
 ---
 
-# Page Helpers
+## Page Helpers
 
-## `title(text)`
+### `title(text)`
 
 Changes the page title.
 
@@ -465,9 +749,7 @@ Changes the page title.
 title("Glint Documentation")
 ```
 
----
-
-## `page(text)`
+### `page(text)`
 
 Sets the page title and creates a main heading.
 
@@ -477,9 +759,9 @@ page("GlintCode")
 
 ---
 
-# Loop Helpers
+## Loop Helpers
 
-## `repeat(times, callback)`
+### `repeat(times, callback)`
 
 Runs a callback a fixed number of times.
 
@@ -489,11 +771,9 @@ repeat(5, (i) => {
 })
 ```
 
----
+### `forever(callback)`
 
-## `forever(callback)`
-
-Runs a callback every animation frame until stopped.
+Runs a callback every animation frame. Returns a control object with a `stop()` method.
 
 ```glint
 let loop = forever(() => {
@@ -501,14 +781,12 @@ let loop = forever(() => {
 })
 
 // Later...
+await sleep(5000)
 loop.stop()
 ```
 
 ---
 
-
-
 GlintCode is licensed under the **GNU General Public License v3.0 (GPL-3.0)**.
 
 ---
-
